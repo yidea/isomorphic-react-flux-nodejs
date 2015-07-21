@@ -1,0 +1,29 @@
+// WalmartIcons path
+// expecting the web server to serve the fonts up from here.
+// the gulpfile may be copying those over from 'node_modules/@walmart/hydra/node_modules/walmarticons/standard/fonts/*.*'
+$baseFontPath = "../../node_modules/@walmart/walmarticons/standard/fonts/";
+
+// WalmartIcons files
+@import "../../node_modules/@walmart/walmarticons/standard/styl/includes";
+@import "../../node_modules/@walmart/walmarticons/standard/styl/font-face";
+@import "../../node_modules/@walmart/walmarticons/standard/styl/main";
+
+// Walmart specific includes
+@import "../../node_modules/@walmart/hydra/src/tenants/walmart/includes";
+@import "../../node_modules/@walmart/hydra/src/tenants/walmart/main";
+
+// WalmartIcons files
+
+// these may depend on the includes above
+@import "../../node_modules/@walmart/wmreact-base/base";
+@import "../../node_modules/@walmart/wmreact-layout/layout";
+@import "../../node_modules/@walmart/wmreact-accordion/accordion";
+@import "../../node_modules/@walmart/wmreact-carousel/carousel";
+@import "../../node_modules/@walmart/wmreact-containers/containers";
+@import "../../node_modules/@walmart/wmreact-interactive/interactive";
+@import "../../node_modules/@walmart/wmreact-products/products";
+@import "../../node_modules/@walmart/wmreact-reviews/reviews";
+@import "../../node_modules/@walmart/wmreact-questions/questions";
+
+// Custom
+@import "./custom";

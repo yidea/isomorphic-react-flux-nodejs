@@ -1,0 +1,103 @@
+$gutter = 20px;
+
+body {
+  background: #eee;
+}
+
+.item-setup {
+  margin: 40px 0 80px;
+}
+
+.item-setup-body {
+  padding: $gutter $gutter 30px;
+  margin-top: $gutter;
+
+  background: $white;
+  border-radius: 4px;
+  box-shadow: 0 0 5px rgba(0,0,0,.25);
+}
+
+.item-setup-title {
+  margin: 0 0 ($gutter/2);
+}
+
+.zeus-footer {
+  display: none;
+}
+
+.add-item, .shelf {
+  clearfix();
+}
+
+.shelf {
+  span {
+    margin-right: $gutter;
+
+    font-size: 18px;
+    font-weight: 300;
+  }
+
+  .shelf-title-border {
+    margin-top: $gutter;
+    padding-top: ($gutter/2);
+    border-top: 1px solid #ccc;
+  }
+
+  .shelf-result {
+    font-style: italic;
+  }
+
+  .shelf-action {
+    margin-top: ($gutter*1.5);
+
+    button {
+      margin-right: $gutter;
+    }
+  }
+}
+
+.level-red {
+  color: $red;
+}
+
+.level-green {
+  color: $green;
+}
+
+.example-enter {
+  opacity: 0.01;
+  transition: opacity .5s ease-in;
+}
+
+.example-enter.example-enter-active {
+  opacity: 1;
+}
+
+.example-leave {
+  opacity: 1;
+  transition: opacity .5s ease-in;
+}
+
+.example-leave.example-leave-active {
+  opacity: 0.01;
+}
+
+// griddle datatable
+.griddle {
+  .griddle-container {
+    border-radius: 4px;
+  }
+
+  .griddle-filter {
+    margin-bottom: ($gutter/2);
+
+    .form-control {
+      margin-top: 0;
+    }
+  }
+
+  .table {
+    margin-top: 0;
+    border-bottom: none;
+  }
+}
