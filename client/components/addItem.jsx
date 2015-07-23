@@ -22,13 +22,13 @@ export default React.createClass({
 
   _onSubmit(ev) {
     ev.preventDefault();
-    const store = this.props.Store;
     let productName = this.props.Store.value;
     if (!productName) { return; }
 
     this.props.Action.fetchQarth(productName)
       .then(function () {
-        this.transitionTo(`/shelf/${encodeURIComponent(productName)}`);
+        //this.transitionTo(`/shelf/${encodeURIComponent(productName)}`);
+        this.transitionTo("shelf-suggest", {productName: encodeURIComponent(productName)});
       }.bind(this));
   },
 

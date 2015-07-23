@@ -1,11 +1,11 @@
 /**
- *  Shelf.
+ *  Suggest.
  */
 import React from "react";
 import Router from "react-router";
 import Firebase from "firebase";
+import Configs from "../../config/configs";
 
-import {Layout} from "@walmart/wmreact-layout";
 import {Button} from "@walmart/wmreact-interactive";
 
 export default React.createClass({
@@ -13,9 +13,14 @@ export default React.createClass({
 
   mixins: [Router.Navigation, Router.State],
 
+  propTypes: {
+    Action: React.PropTypes.object,
+    Store: React.PropTypes.object
+  },
+
   componentWillMount() {
-    this.firebaseRef = new Firebase("https://sweltering-heat-7932.firebaseio.com/").child("items");
-    //if qarthResponse is null but params has productName, issue a fetch
+    this.firebaseRef = new Firebase(Configs.API_FIREBASE).child("items");
+    // if qarthResponse is null but params has productName, issue a fetch
     let productName = this.props.params.productName;
     if (productName && this.props.Store.qarthResponse == null) {
       this.props.Action.setProductName(productName);
@@ -24,19 +29,19 @@ export default React.createClass({
   },
 
   componentWillUnmount() {
-    //cleanup firebase events
+    // cleanup firebase events
     this.firebaseRef.off();
   },
 
   _onClickBack() {
-    this.transitionTo("home");
+    this.transitionTo("shelf");
   },
 
-  _onClickAccept(ev) {
-    //store in database title, shelf, confidence, date
-    //firebase push array data
+  _onClickAccept() {
+    // store in database title, shelf, confidence, date
+    // firebase push array data
     const res = this.props.Store.qarthResponse;
-    if (!res) return;
+    if (!res) { return; }
 
     this.firebaseRef.push({
       productName: res.productName,
@@ -44,22 +49,22 @@ export default React.createClass({
       confidenceLevel: res.confidence + "%",
       date: Firebase.ServerValue.TIMESTAMP
     }, function () {
-      this.transitionTo("review");
+      this.transitionTo("shelf-review");
     }.bind(this));
   },
 
   render() {
-    let { productName } = this.context.router.getCurrentParams();
-    let store = this.props.Store;
-    let content;
+    // let { productName } = this.context.router.getCurrentParams();
+    let store = this.props.Store,
+      content;
     if (!store.loaded) {
       content = (<div>Loading..</div>);
     } else if (store.qarthError) {
-      content = <div>{store.qarthError}</div>
+      content = (<div>{store.qarthError}</div>);
     } else {
       if (store.qarthResponse) {
-        let level = store.qarthResponse.confidence;
-        let classNames;
+        let level = store.qarthResponse.confidence,
+          classNames;
         if (level <= 50) {
           classNames = "level-red";
         } else {

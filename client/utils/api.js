@@ -1,10 +1,11 @@
 /**
  * Fetch data from rest API.
+ *
+ * API:
+ * - http://127.0.0.1:3000/api/qarth/shelf?productName=ipad
  */
 require("es6-promise").polyfill();
 require("isomorphic-fetch");
-let request = require("superagent");
-import _ from "lodash";
 
 let api = {
   BASE_URL: "",
@@ -20,19 +21,19 @@ let api = {
   },
 
   fetchQarth: (productName) => new Promise(function (resolve, reject) {
-    let url = `${api.BASE_URL}/api/qarth?productName=${encodeURIComponent(productName)}`;
-    console.log(url);
-    return fetch(url).then(res => {
-      if (res.status >= 400) {
-        reject();
-        throw new Error("Bad server response");
-      }
-      return res.json();
+    let url = `${api.BASE_URL}/api/qarth/shelf?productName=${encodeURIComponent(productName)}`;
+    return fetch(url)
+      .then(res => {
+        if (res.status >= 400) {
+          reject();
+          throw new Error("Bad server response");
+        }
+        return res.json();
       })
-    .then(data => {
+      .then(data => {
         resolve(data);
       }
-    )
+    );
   })
 };
 

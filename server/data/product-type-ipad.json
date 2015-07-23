@@ -1,0 +1,17 @@
+{
+  "_items": [
+    {
+      "product_id": 41585041,
+      "tags": {
+        "model_guess": [
+          {
+            "decision": "is",
+            "confidence": 0.8090460300445557,
+            "attr_id": "product_type",
+            "value_id": "4647"
+          }
+        ]
+      }
+    }
+  ]
+}

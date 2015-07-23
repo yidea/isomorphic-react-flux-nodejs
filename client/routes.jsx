@@ -1,14 +1,13 @@
 /**
  * routes
  */
-import React, {cloneElement} from "react/addons";
+import React from "react/addons";
 import {Route, DefaultRoute, RouteHandler} from "react-router";
 import AltContainer from "alt/AltContainer";
-import _ from "lodash";
 
 import {Body, Heading} from "@walmart/wmreact-base";
 import AddItem from "./components/addItem";
-import Shelf from "./components/shelf";
+import Suggest from "./components/suggest";
 import Review from "./components/review";
 
 let {CSSTransitionGroup} = React.addons;
@@ -19,8 +18,8 @@ const Container = React.createClass({
   },
 
   _wrapAlt(component) {
-    const Store = this.props.flux.getStore("Store");
-    const Action = this.props.flux.getActions("Action");
+    const Store = this.props.flux.getStore("Store"),
+      Action = this.props.flux.getActions("Action");
     return (
       <AltContainer
         actions={{ Action: Action }}
@@ -33,9 +32,9 @@ const Container = React.createClass({
 
   render() {
     return (
-      <Body showFooter={false} title="" navText="Review Items" navTarget="/#/review">
+      <Body showFooter={false} title="" navText="Review Items" navTarget="/#/shelf/review">
         <div className="item-setup ResponsiveContainer">
-          <Heading.H1 className="no-margin">New Item Setup</Heading.H1>
+          <Heading.H1 className="no-margin">New Item Setup-Shelf</Heading.H1>
           <div className="item-setup-body">
             <CSSTransitionGroup transitionName="example">
               {this._wrapAlt(<RouteHandler/>)}
@@ -47,10 +46,13 @@ const Container = React.createClass({
   }
 });
 
+// add->suggest->review
 export default (
   <Route path="/" handler={Container}>
-    <DefaultRoute name="home" handler={AddItem} />
-    <Route name="shelf" path="/shelf/:productName" handler={Shelf} />
-    <Route name="review" path="/review" handler={Review} />
+    <Route name="shelf" path="/shelf">
+      <DefaultRoute name="shelf-add" handler={AddItem} />
+      <Route name="shelf-suggest" path="suggest/:productName" handler={Suggest} />
+      <Route name="shelf-review" path="review" handler={Review} />
+    </Route>
   </Route>
 );

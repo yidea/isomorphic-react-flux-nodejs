@@ -11,7 +11,7 @@ import chromeDebug from "alt/utils/chromeDebug";
 import Flux from "./flux";
 import routes from "./routes";
 
-//styles
+// styles
 import "./styles/base.styl";
 
 const rootEl = document.querySelector(".js-content");
@@ -20,7 +20,7 @@ const rootEl = document.querySelector(".js-content");
 // client-side application, we instantiate a single instance here which the
 // entire app will share. (So the client app _has_ an effective singleton).
 const flux = new Flux();
-//chromeDebug(flux);
+chromeDebug(flux);
 
 // Try server bootstrap _first_ because doesn't need a fetch.
 const serverBootstrapEl = document.querySelector(".js-bootstrap");
@@ -48,13 +48,10 @@ if (serverBootstrapEl) {
 //  }
 //}
 
-// Note: Change suffix to `.js` if not using actual JSX.
-//React.render(<Page flux={flux} />, rootEl);
-
 //Router.run(routes, Router.HistoryLocation, function (Handler, state) {
 //  AltIso.render(flux, Handler, { flux: flux });
 //});
 
-Router.run(routes, Router.HashLocation, (Root) => { //Router.HistoryLocation
-  React.render(<Root flux={flux}/>, rootEl);
+Router.run(routes, Router.HashLocation, (Root) => { // Router.HistoryLocation
+  React.render(<Root flux={flux} />, rootEl);
 });

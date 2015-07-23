@@ -1,0 +1,17 @@
+{
+  "_items": [
+    {
+      "product_id": "1",
+      "tags": {
+        "model_guess": [
+          {
+            "decision": "is",
+            "confidence": 0.02325139194726944,
+            "attr_id": "shelf",
+            "value_id": "615980"
+          }
+        ]
+      }
+    }
+  ]
+}

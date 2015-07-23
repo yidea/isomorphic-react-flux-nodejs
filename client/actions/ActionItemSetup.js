@@ -14,7 +14,6 @@ export default class Actions {
 
   fetchQarth(value) {
     this.dispatch();
-    
     return api.fetchQarth(value)
       .then(res => {
         this.actions.fetchQarthSuccess(res);

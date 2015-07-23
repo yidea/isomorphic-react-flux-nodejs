@@ -6,11 +6,9 @@ import Router from "react-router";
 import Firebase from "firebase";
 import _ from "lodash";
 import moment from "moment";
+import Configs from "../../config/configs";
 
-import {Button} from "@walmart/wmreact-interactive";
 import Griddle from "griddle-react";
-
-const FIREBASE_API = "https://sweltering-heat-7932.firebaseio.com/";
 
 export default React.createClass({
   displayName: "Review",
@@ -22,8 +20,8 @@ export default React.createClass({
   },
 
   componentWillMount() {
-    this.firebaseRef = new Firebase(FIREBASE_API).child("items");
-    //firebase init load event
+    this.firebaseRef = new Firebase(Configs.API_FIREBASE).child("items");
+    // firebase init load event
     this.firebaseRef.on("value", function (snapshot) {
       let data = snapshot.val();
       if (data) {
@@ -60,17 +58,17 @@ export default React.createClass({
       },
       {
         columnName: "shelfName",
-        displayName:"Shelf",
+        displayName: "Shelf",
         order: 2
       },
       {
         columnName: "confidenceLevel",
-        displayName:"Confidence",
+        displayName: "Confidence",
         order: 3
       },
       {
         columnName: "date",
-        displayName:"Date",
+        displayName: "Date",
         order: 4
       }
     ];
@@ -88,7 +86,7 @@ export default React.createClass({
             showSettings={false}
             />
         </div>
-      )
+      );
     }
     return null;
   }

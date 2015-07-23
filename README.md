@@ -29,6 +29,8 @@ $ NODE_ENV=production pm2 start server/index.js
 
 ### TODO 
 
+- 
+- Add API cache
 - Tests
 - Isomophic
 - Firebase daily backup
