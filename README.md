@@ -31,8 +31,9 @@ $ NODE_ENV=production pm2 start server/index.js
 
 ### TODO
 
-- Flux: Firebase to store, bluebird promise
+- Flux: Firebase to store, bluebird promise, mixin?
 - UI: multiply tendency, mobile, app, tween state react, spinner
+ zebra table styling, confidence level component 
 - Server: add API cache, cors
 - Tests infrastructure
 - Isomophic infrastructure

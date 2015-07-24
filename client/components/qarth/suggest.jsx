@@ -21,9 +21,9 @@ export default React.createClass({
   },
 
   componentWillMount() {
-    let productName = this.props.params.productName;
+    let productName = this.props.params.productName,
+      route;
     // setup Firebase connection
-    let route;
     if (this.props.routeName) {
       route = (this.props.routeName === Configs.ROUTE_SHELF) ?
         Configs.ROUTE_SHELF : Configs.ROUTE_PRODUCT_TYPE;
@@ -51,18 +51,19 @@ export default React.createClass({
   },
 
   _onClickAccept() {
-    // store in database title, shelf, confidence, date
     const res = this.props.Store.qarthResponse;
     if (!res) { return; }
 
     let data = {
       productName: res.productName,
       shelfName: res.shelfName,
-      confidenceLevel: res.confidence + "%",
+      confidenceLevel: res.confidence,
       date: Firebase.ServerValue.TIMESTAMP
+    };
+    if (this.props.routeName === Configs.ROUTE_PRODUCT_TYPE) {
+      data.attr = res.attr;
     }
-
-    this.firebaseRef.push(data, function () {
+    this.firebaseRef.push(data,  () => {
       let route;
       if (this.props.routeName) {
         route = (this.props.routeName === Configs.ROUTE_SHELF) ?
@@ -70,15 +71,16 @@ export default React.createClass({
         route += "-review";
         this.transitionTo(route);
       }
-
-    }.bind(this));
+    });
   },
 
   _renderAttribute() {
     let attributes;
     if (this.props.Store.qarthResponse.attr) {
-      attributes = this.props.Store.qarthResponse.attr.map((item) => {
-        return (<button type="button" className="btn btn-badge btn-badge-alt">{item}</button>);
+      attributes = this.props.Store.qarthResponse.attr.map((item, index) => {
+        return (
+          <button key={index} type="button" className="btn btn-badge btn-badge-alt">{item}</button>
+        );
       });
       return (
         <div>

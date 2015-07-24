@@ -6,6 +6,7 @@ body {
 
 .item-setup {
   margin: 40px 0 80px;
+  max-width: 100%;
 }
 
 .item-setup-body {
@@ -98,7 +99,29 @@ body {
 
   .table {
     margin-top: 0;
-    border-bottom: none;
+    border-bottom: 0;
+
+    font-size: 13px;
+
+    th {
+      text-align: left;
+    }
+  }
+
+  .standard-row {
+    background: $white;
+
+    > td {
+      background-color: inherit !important;
+    }
+
+    &:nth-of-type(even){
+      background: #f7f7f7;
+    }
+  }
+
+  .column-attr {
+    max-width: 700px;
   }
 }
 
