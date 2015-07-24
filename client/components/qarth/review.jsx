@@ -6,7 +6,7 @@ import Router from "react-router";
 import Firebase from "firebase";
 import _ from "lodash";
 import moment from "moment";
-import Configs from "../../config/configs";
+import Configs from "config/configs";
 
 import Griddle from "griddle-react";
 
@@ -15,12 +15,24 @@ export default React.createClass({
 
   mixins: [Router.Navigation],
 
+  propTypes: {
+    Action: React.PropTypes.object,
+    Store: React.PropTypes.object,
+    params: React.PropTypes.object,
+    routeName: React.PropTypes.string
+  },
+
   getInitialState: function () {
     return {items: null};
   },
 
   componentWillMount() {
-    this.firebaseRef = new Firebase(Configs.API_FIREBASE).child("items");
+    let route;
+    if (this.props.routeName) {
+      route = (this.props.routeName === Configs.ROUTE_SHELF) ?
+        Configs.ROUTE_SHELF : Configs.ROUTE_PRODUCT_TYPE;
+    }
+    this.firebaseRef = new Firebase(Configs.API_FIREBASE).child(route);
     // firebase init load event
     this.firebaseRef.on("value", function (snapshot) {
       let data = snapshot.val();
@@ -38,7 +50,6 @@ export default React.createClass({
           .value();
 
         this.state.items = data;
-        //use store
         this.forceUpdate();
       }
     }.bind(this));

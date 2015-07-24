@@ -4,10 +4,12 @@ Item Setup
 Quick experiment for Item setup auto shelf with FE stack on Node.js & React
 
 ### FE Stack
-- Client: React + Alt + Stylus + React Router
+
+- Client: React + Alt + Stylus + React Router 
 - Server: Express + Handlebars 
 - Build: Webpack + Babel
 - Data: Firebase
+- Lint: Eslint
 
 ### Development
 
@@ -27,10 +29,11 @@ $ npm install pm2 -g
 $ NODE_ENV=production pm2 start server/index.js
 ```
 
-### TODO 
+### TODO
 
-- 
-- Add API cache
-- Tests
-- Isomophic
+- Flux: Firebase to store, bluebird promise
+- UI: multiply tendency, mobile, app, tween state react, spinner
+- Server: add API cache, cors
+- Tests infrastructure
+- Isomophic infrastructure
 - Firebase daily backup

@@ -47,9 +47,14 @@ module.exports = {
   },
   resolve: {
     modulesDirectories: ["node_modules", "client", "node_modules/@walmart"],
-    extensions: ["", ".js", ".jsx"]
+    extensions: ["", ".js", ".jsx"],
+    // make alias for module import at /config import Configs from "config/configs";
+    alias: {
+      config: path.resolve(__dirname, "config")
+    }
   },
   plugins: [
+    // TODO: add webpack-notifier for dev ?
     // Clean
     new CleanPlugin(["dist"]),
     new ExtractTextPlugin("style.[hash].css"),
@@ -62,7 +67,7 @@ module.exports = {
     new webpack.DefinePlugin({
       "process.env": {
         // Signal production mode for React JS libs.
-        NODE_ENV: JSON.stringify("production")
+        NODE_ENV: process.env.NODE_ENV
       }
     }),
 

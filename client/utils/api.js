@@ -20,8 +20,9 @@ let api = {
     }
   },
 
-  fetchQarth: (productName) => new Promise(function (resolve, reject) {
-    let url = `${api.BASE_URL}/api/qarth/shelf?productName=${encodeURIComponent(productName)}`;
+
+  fetchQarth: (type, productName) => new Promise(function (resolve, reject) {
+    let url = `${api.BASE_URL}/api/qarth/${type}?productName=${encodeURIComponent(productName)}`;
     return fetch(url)
       .then(res => {
         if (res.status >= 400) {
