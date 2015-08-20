@@ -82,6 +82,7 @@
     "method-override": "^2.3.4",
     "moment": "^2.10.3",
     "morgan": "^1.6.1",
+    "node-cache": "^3.0.0",
     "object-assign": "^2.0.0",
     "react": "^0.13.3",
     "react-bootstrap": "^0.21.1",

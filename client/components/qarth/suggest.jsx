@@ -7,6 +7,7 @@ import Firebase from "firebase";
 import Configs from "config/configs";
 
 import {Button} from "@walmart/wmreact-interactive";
+import Percentage from "./griddle-component/percentage";
 
 export default React.createClass({
   displayName: "Suggest",
@@ -102,13 +103,6 @@ export default React.createClass({
     } else if (store.qarthError) {
       content = (<div>{store.qarthError}</div>);
     } else if (store.qarthResponse) {
-      let level = store.qarthResponse.confidence,
-        classNames;
-      if (level <= 50) {
-        classNames = "level-red";
-      } else {
-        classNames = "level-green";
-      }
       content = (
         <div className="shelf">
           <h4 className="shelf-title">Item Title</h4>
@@ -118,7 +112,7 @@ export default React.createClass({
           </h4>
           <div className="shelf-result">
             <span>{store.qarthResponse.shelfName}</span>
-            <span className={classNames}>{store.qarthResponse.confidence + "% confidence"}</span>
+            <Percentage data={store.qarthResponse.confidence} />
           </div>
           {this.props.routeName === Configs.ROUTE_PRODUCT_TYPE ? this._renderAttribute() : null}
           <div className="shelf-action pull-right">

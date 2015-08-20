@@ -2,7 +2,7 @@
  * routes
  */
 import React from "react";
-import {Route, DefaultRoute} from "react-router";
+import {Route, DefaultRoute, NotFoundRoute} from "react-router";
 import Configs from "config/configs";
 
 import Container from "./components/container";
@@ -19,12 +19,14 @@ export default (
       <DefaultRoute name="shelf-add" handler={AddItem} />
       <Route name="shelf-suggest" path="suggest/:productName" handler={Suggest} />
       <Route name="shelf-review" path="review" handler={Review} />
+      <NotFoundRoute handler={AddItem} />
     </Route>
     /* product-type */
     <Route name={Configs.ROUTE_PRODUCT_TYPE} path={Configs.ROUTE_PRODUCT_TYPE}>
       <DefaultRoute otherprop="test" name="product-type-add" handler={AddItem} />
       <Route name="product-type-suggest" path="suggest/:productName" handler={Suggest} />
       <Route name="product-type-review" path="review" handler={Review} />
+      <NotFoundRoute handler={AddItem} />
     </Route>
   </Route>
 );

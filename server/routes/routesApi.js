@@ -4,10 +4,15 @@
  */
 import express from "express";
 import request from "superagent";
+import _ from "lodash";
+import NodeCahce from "node-cache";
+
 import Configs from "../../config/configs";
 import Taxonomy from "../data/taxonomy-shelves.json";
 import ProductType from "../data/product-type-attributes.json";
-let router = express.Router();
+
+let router = express.Router(),
+  apiCache = new NodeCahce({ stdTTL: 360 * 60, checkperiod: 60 * 60 });
 
 // example proxy
 // http://127.0.0.1:3000/api/qarth/productType?productName=ipad
@@ -24,7 +29,9 @@ router.get("/qarth/:type", (req, res) => {
     response,
     apiUrl = "",
     mockFileUrl = "",
-    lookupMap;
+    lookupMap,
+    key = `${type}-${productName}`;
+
   if (type === Configs.ROUTE_SHELF) {
     apiUrl = Configs.API_QARTH_SHELF;
     mockFileUrl = "../data/mock/shelf-ipad.json";
@@ -36,38 +43,48 @@ router.get("/qarth/:type", (req, res) => {
   }
   if (!productName || !type || !apiUrl) { return res.json({error: "wrong path or param"}); }
 
-  request
-    .post(apiUrl)
-    .send([{"data": [{"attr_id": "Product Name", "value": productName}], "product_id": "1"}])
-    .set("Accept", "application/json")
-    .end((err, data) => {
-      if (err) {
-        console.log(err);
-        response = require(mockFileUrl); // fallback data for offline dev
-      } else {
-        response = data.body;
-      }
-      let item = response._items;
-      if (item) {
-        item = item[0];
-        let guess = item.tags.model_guess[0];
-        if (guess) {
-          let shelfId = guess.value_id;
-          response.productName = productName;
-          response.shelfId = shelfId;
-          response.confidence = Math.round(guess.confidence * 100);
-          if (lookupMap[shelfId]) {
-            if (type === Configs.ROUTE_SHELF) {
-              response.shelfName = lookupMap[shelfId];
-            } else if (type === Configs.ROUTE_PRODUCT_TYPE) {
-              response.shelfName = lookupMap[shelfId].name;
-              response.attr = lookupMap[shelfId].attr;
+  // get from cache if cached, otherwize request service
+  apiCache.get(key, (err, cache) => {
+    if (err) { throw new Error(err); }
+    if (cache !== undefined) {
+      return res.json(cache);
+    } else {
+      request
+        .post(apiUrl)
+        .send([{"data": [{"attr_id": "Product Name", "value": productName}], "product_id": "1"}])
+        .set("Accept", "application/json")
+        .end((error, data) => {
+          if (error) {
+            console.log(error);
+            response = require(mockFileUrl); // fallback data for offline dev
+          } else {
+            response = data.body;
+          }
+          let item = response._items;
+          if (item) {
+            item = item[0];
+            let guess = item.tags.model_guess[0];
+            if (guess) {
+              let shelfId = guess.value_id;
+              response.productName = productName;
+              response.shelfId = shelfId;
+              response.confidence = Math.round(guess.confidence * 100);
+              if (lookupMap[shelfId]) {
+                if (Configs.ROUTE_SHELF === type) {
+                  response.shelfName = lookupMap[shelfId];
+                } else if (Configs.ROUTE_PRODUCT_TYPE === type) {
+                  response.shelfName = lookupMap[shelfId].name;
+                  response.attr = _.slice(lookupMap[shelfId].attr, 0, 10);
+                }
+              }
             }
           }
-        }
-      }
-      return res.json(response);
-    });
+          // cache data
+          apiCache.set(key, response);
+          return res.json(response);
+        });
+    }
+  });
 });
 
 export default router;

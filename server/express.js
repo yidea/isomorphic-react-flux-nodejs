@@ -1,25 +1,25 @@
 /**
  * Express
  */
-let HOST = process.env.HOST || "127.0.0.1";
-let PORT = process.env.PORT || 3000;
-let WEBPACK_DEV = process.env.WEBPACK_DEV === "true";
-let WEBPACK_DEV_PORT = "2992";
+import express from "express";
+import session from "express-session";
+import bodyParser from "body-parser";
+import cookieParser from "cookie-parser";
+import path from "path";
+import flash from "express-flash";
+import morgan from "morgan";
+import methodOverride from "method-override";
+import compression from "compression";
+import exphbs from "express-handlebars";
+import secrets from "../config/secrets";
 
-let express = require("express");
-let session = require("express-session");
-let bodyParser = require("body-parser");
-let cookieParser = require("cookie-parser");
-let path = require("path");
-let flash = require("express-flash");
-let morgan = require("morgan");
-let methodOverride = require("method-override");
-let compression = require("compression");
-let exphbs = require("express-handlebars");
-let secrets = require("../config/secrets");
-let app = module.exports = express();
+let app = module.exports = express(),
+ HOST = process.env.HOST || "127.0.0.1",
+ PORT = process.env.PORT || 3000,
+ WEBPACK_DEV = process.env.WEBPACK_DEV === "true",
+ WEBPACK_DEV_PORT = "2992";
 
-// Express setup
+// Express setup, middleware
 app.engine("hbs", exphbs({ extname: ".hbs" }));
 app.set("views", path.join(__dirname, "./views"));
 app.use("/js", express.static(path.join(__dirname, "../dist/js")));
@@ -29,7 +29,7 @@ app.use(express.static(path.join(__dirname, "../..", "public")));
 // Keeping it makes it easier for an attacker to build the site"s profile
 app.disable("x-powered-by");
 app.use(bodyParser.json()); // for parsing application/json
-app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded w req.body
 app.use(methodOverride()); // method override
 if (WEBPACK_DEV) {
   app.use(morgan("dev")); // log request to console on DEV
@@ -53,6 +53,9 @@ app.use(session({
 }));
 app.use(flash()); // use flash
 app.use(compression()); // gzip response
+
+// init global variables
+app.locals.host = HOST;
 
 /**
  * Routes
@@ -114,3 +117,5 @@ app.use(function (req, res) { //handle all unhandled requests, put at bottom
 
 // Start server
 app.listen(PORT);
+
+export default app;

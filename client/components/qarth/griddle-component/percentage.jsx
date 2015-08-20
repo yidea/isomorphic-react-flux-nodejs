@@ -19,7 +19,7 @@ export default React.createClass({
     className = (percentage >= 50) ? "level-green" : "level-red";
     return (
       <span className={className}>
-        {percentage}%
+        {percentage + "%"}
       </span>
     );
   }
